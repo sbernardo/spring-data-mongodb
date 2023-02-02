@@ -15,6 +15,11 @@
  */
 package org.springframework.data.mongodb.core.aggregation;
 
+import static org.springframework.data.mongodb.core.aggregation.Fields.*;
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.data.domain.Sort;
@@ -31,11 +36,6 @@ import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.data.mongodb.core.query.SerializationUtils;
 import org.springframework.util.Assert;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.springframework.data.mongodb.core.aggregation.Fields.field;
 
 /**
  * An {@code Aggregation} is a representation of a list of aggregation steps to be performed by the MongoDB Aggregation

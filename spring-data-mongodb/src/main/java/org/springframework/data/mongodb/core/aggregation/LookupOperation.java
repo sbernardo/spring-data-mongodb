@@ -15,13 +15,13 @@
  */
 package org.springframework.data.mongodb.core.aggregation;
 
+import java.util.List;
+
 import org.bson.Document;
 import org.springframework.data.mongodb.core.aggregation.ExposedFields.ExposedField;
 import org.springframework.data.mongodb.core.aggregation.FieldsExposingAggregationOperation.InheritsFieldsAggregationOperation;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
-
-import java.util.List;
 
 /**
  * Encapsulates the aggregation framework {@code $lookup}-operation. We recommend to use the static factory method
