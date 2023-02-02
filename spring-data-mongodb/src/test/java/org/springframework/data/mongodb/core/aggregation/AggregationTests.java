@@ -499,7 +499,7 @@ public class AggregationTests {
 		/*
 		 //complex mongodb aggregation framework example from
 		 https://docs.mongodb.org/manual/tutorial/aggregation-examples/#largest-and-smallest-cities-by-state
-
+		
 		 db.zipcodes.aggregate(
 			 	{
 				   $group: {
@@ -1518,28 +1518,23 @@ public class AggregationTests {
 		assertThat(firstItem).containsEntry("linkedPerson.[0].firstname", "u1");
 	}
 
-    @Test
-    void shouldLookupPeopleCorrectlyWithPipeline() {
-        createUsersWithReferencedPersons();
+	@Test
+	void shouldLookupPeopleCorrectlyWithPipeline() {
+		createUsersWithReferencedPersons();
 
-        TypedAggregation<User> agg = newAggregation(User.class, //
-                lookup(
-                        "person",
-                        "_id",
-                        "firstname",
-                        "linkedPerson",
-                        List.of(match(where("firstname").is("u1")))), //
-                sort(ASC, "id"));
+		TypedAggregation<User> agg = newAggregation(User.class, //
+				lookup("person", "_id", "firstname", "linkedPerson", List.of(match(where("firstname").is("u1")))), //
+				sort(ASC, "id"));
 
-        AggregationResults<Document> results = mongoTemplate.aggregate(agg, User.class, Document.class);
+		AggregationResults<Document> results = mongoTemplate.aggregate(agg, User.class, Document.class);
 
-        List<Document> mappedResults = results.getMappedResults();
+		List<Document> mappedResults = results.getMappedResults();
 
-        Document firstItem = mappedResults.get(0);
+		Document firstItem = mappedResults.get(0);
 
-        assertThat(firstItem).containsEntry("_id", "u1");
-        assertThat(firstItem).containsEntry("linkedPerson.[0].firstname", "u1");
-    }
+		assertThat(firstItem).containsEntry("_id", "u1");
+		assertThat(firstItem).containsEntry("linkedPerson.[0].firstname", "u1");
+	}
 
 	@Test
 	void shouldLookupPeopleCorrectlyWithPipelineAndLet() {
