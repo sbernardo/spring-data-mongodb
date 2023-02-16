@@ -669,11 +669,11 @@ public class Aggregation {
 	/**
 	 * Entrypoint for creating {@link LookupOperation $lookup} using a fluent builder API.
 	 * <pre class="code">
-	 * Aggregation.lookup().from("restaurants") //
-	 * 	.localField("restaurant_name") //
-	 * 	.foreignField("name") //
-	 * 	.let(newVariable("orders_drink").forField("drink")) //
-	 * 	.pipeline(match(ctx -> new Document("$expr", new Document("$in", List.of("$$orders_drink", "$beverages"))))) //
+	 * Aggregation.lookup().from("restaurants")
+	 * 	.localField("restaurant_name")
+	 * 	.foreignField("name")
+	 * 	.let(newVariable("orders_drink").forField("drink"))
+	 * 	.pipeline(match(ctx -> new Document("$expr", new Document("$in", List.of("$$orders_drink", "$beverages")))))
 	 * 	.as("matches")
 	 * </pre>
 	 * @return new instance of {@link LookupOperationBuilder}.

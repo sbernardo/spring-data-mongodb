@@ -240,7 +240,7 @@ public class VariableOperators {
 		 * @return new instance of {@link Let}.
 		 * @since 4.1
 		 */
-		public static Let just(final ExpressionVariable... variables) {
+		public static Let just(ExpressionVariable... variables) {
 			return new Let(List.of(variables), null);
 		}
 
@@ -250,14 +250,14 @@ public class VariableOperators {
 		 * @param variables must not be {@literal null}.
 		 * @return
 		 */
-		public static LetBuilder define(final Collection<ExpressionVariable> variables) {
+		public static LetBuilder define(Collection<ExpressionVariable> variables) {
 
 			Assert.notNull(variables, "Variables must not be null");
 
 			return new LetBuilder() {
 
 				@Override
-				public Let andApply(final AggregationExpression expression) {
+				public Let andApply(AggregationExpression expression) {
 
 					Assert.notNull(expression, "Expression must not be null");
 					return new Let(new ArrayList<ExpressionVariable>(variables), expression);
@@ -271,7 +271,7 @@ public class VariableOperators {
 		 * @param variables must not be {@literal null}.
 		 * @return
 		 */
-		public static LetBuilder define(final ExpressionVariable... variables) {
+		public static LetBuilder define(ExpressionVariable... variables) {
 
 			Assert.notNull(variables, "Variables must not be null");
 			return define(List.of(variables));
@@ -290,7 +290,7 @@ public class VariableOperators {
 		}
 
 		@Override
-		public Document toDocument(final AggregationOperationContext context) {
+		public Document toDocument(AggregationOperationContext context) {
 			return toLet(ExposedFields.synthetic(Fields.fields(getVariableNames())), context);
 		}
 
