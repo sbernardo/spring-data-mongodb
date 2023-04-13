@@ -29,6 +29,7 @@ import org.springframework.data.mongodb.core.index.IndexOperations;
 import org.springframework.data.mongodb.core.mapping.MongoPersistentEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.NumberUtils;
 
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
@@ -153,6 +154,19 @@ public class DefaultIndexOperations implements IndexOperations {
 			return null;
 		});
 
+	}
+
+	@Override
+	public void alterIndex(String name, org.springframework.data.mongodb.core.index.IndexOptions options) {
+
+		Document indexOptions = new Document("name", name);
+		indexOptions.putAll(options.toDocument());
+
+		Document document = mongoOperations
+				.execute(db -> db.runCommand(new Document("collMod", collectionName).append("index", indexOptions)));
+
+		Assert.state(NumberUtils.convertNumberToTargetClass(document.get("ok", (Number) 0), Integer.class) == 1,
+				"Index '%s' could not be modified. Response was %s".formatted(name, document.toJson()));
 	}
 
 	public void dropAllIndexes() {

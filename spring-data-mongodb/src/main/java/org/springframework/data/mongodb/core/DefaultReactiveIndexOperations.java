@@ -15,6 +15,7 @@
  */
 package org.springframework.data.mongodb.core;
 
+import org.springframework.util.NumberUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -102,6 +103,21 @@ public class DefaultReactiveIndexOperations implements ReactiveIndexOperations {
 			return collection.createIndex(indexDefinition.getIndexKeys(), indexOptions);
 
 		}).next();
+	}
+
+	@Override
+	public Mono<Void> alterIndex(String name, org.springframework.data.mongodb.core.index.IndexOptions options) {
+
+		return mongoOperations.execute(db -> {
+			Document indexOptions = new Document("name", name);
+			indexOptions.putAll(options.toDocument());
+
+			return Flux.from(db.runCommand(new Document("collMod", collectionName).append("index", indexOptions)))
+					.doOnNext(result -> {
+						Assert.state(NumberUtils.convertNumberToTargetClass(result.get("ok", (Number) 0), Integer.class) == 1,
+								"Index '%s' could not be modified. Response was %s".formatted(name, result.toJson()));
+					});
+		}).then();
 	}
 
 	@Nullable
